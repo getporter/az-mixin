@@ -38,5 +38,5 @@ func TestStep_GetFlags(t *testing.T) {
 	f := s.GetFlags()
 
 	require.Len(t, f, 1, "Flags should always have at least 1 entry: --out")
-	assert.Equal(t, builder.NewFlag("out", "json"), f[0])
+	assert.Equal(t, builder.NewFlag("output", "json"), f[0])
 }
