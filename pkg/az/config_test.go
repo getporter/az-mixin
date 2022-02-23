@@ -14,6 +14,6 @@ func TestSetUserAgent(t *testing.T) {
 	m := NewTestMixin(t)
 	m.SetUserAgent()
 
-	expected := "porter az/v1.2.3"
-	require.Equal(t, expected, m.Getenv(AZURE_HTTP_USER_AGENT))
+	expected := "porter az/" + pkg.Version
+	require.Contains(t, m.Getenv(AZURE_HTTP_USER_AGENT), expected)
 }

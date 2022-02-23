@@ -3,13 +3,13 @@ package az
 import (
 	"strings"
 
-	"get.porter.sh/porter/pkg/porter/version"
+	"get.porter.sh/porter/pkg"
 )
 
 const AZURE_HTTP_USER_AGENT = "AZURE_HTTP_USER_AGENT"
 
 func (m *Mixin) SetUserAgent() {
-	value := []string{m.Context.UserAgent(), m.UserAgent()}
+	value := []string{pkg.UserAgent(), m.UserAgent()}
 
 	if agentStr, ok := m.LookupEnv(AZURE_HTTP_USER_AGENT); ok {
 		value = append(value, agentStr)
@@ -19,7 +19,6 @@ func (m *Mixin) SetUserAgent() {
 }
 
 func (m *Mixin) UserAgent() string {
-	opts := version.Options{}
-	v := m.Version(opts)
+	v := m.Version()
 	return v.Name + "/" + v.Version
 }

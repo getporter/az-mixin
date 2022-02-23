@@ -8,10 +8,10 @@ import (
 )
 
 func (m *Mixin) PrintVersion(opts version.Options) error {
-	return version.PrintVersion(m.Context, opts, m.Version(opts))
+	return version.PrintVersion(m.Context, opts, m.Version())
 }
 
-func (m *Mixin) Version(opts version.Options) mixin.Metadata {
+func (m *Mixin) Version() mixin.Metadata {
 	return mixin.Metadata{
 		Name: "az",
 		VersionInfo: pkgmgmt.VersionInfo{
