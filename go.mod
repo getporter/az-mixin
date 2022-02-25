@@ -7,8 +7,6 @@ go 1.17
 // Copy any additional replace directives from Porter's go.mod file
 // They must match the replaces used by porter everything to compile
 replace (
-	//TODO(yingrong): remove once the porter PR is merged
-	get.porter.sh/porter => github.com/vinozzZ/porter v1.0.0-alpha.7.0.20220224013147-0687dd5e3d0c
 	// expose-ast
 	// https://github.com/osteele/liquid/pull/59
 	github.com/osteele/liquid => github.com/carolynvs/liquid v1.2.5-0.20220131221838-2e107bef298f
@@ -18,7 +16,7 @@ replace (
 )
 
 require (
-	get.porter.sh/porter v1.0.0-alpha.9
+	get.porter.sh/porter v1.0.0-alpha.10.0.20220224230106-49a42a969b67
 	github.com/ghodss/yaml v1.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.1.3
