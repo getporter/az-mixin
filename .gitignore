@@ -2,3 +2,5 @@ bin
 .cnab
 /build/git_askpass.sh
 az
+!pkg/az
+!.gitignore

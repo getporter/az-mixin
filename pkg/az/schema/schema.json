@@ -31,7 +31,7 @@
               }
             },
             "installBicep": {
-              "description": "Indicates if Bicep should be install",
+              "description": "Indicates if Bicep should be installed",
               "type": "boolean"
             }
           },
@@ -174,7 +174,8 @@
           },
           "additionalProperties": false
         },
-        "group": {"$ref": "#/definitions/group"}
+        "group": {"$ref": "#/definitions/group"},
+        "login": {"$ref": "#/definitions/login"}
       },
       "additionalProperties": false
     },
@@ -191,6 +192,11 @@
           "type": "string"
         }
       },
+      "additionalProperties": false
+    },
+    "login": {
+      "description": "Login to Azure",
+      "type": "object",
       "additionalProperties": false
     }
   },
