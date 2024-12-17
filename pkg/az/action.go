@@ -88,6 +88,8 @@ func (s *TypedStep) UnmarshalYAML(unmarshal func(interface{}) error) error {
 			continue
 		case "group":
 			cmd = &GroupCommand{}
+    case "login":
+      cmd = &LoginCommand{}
 		default: // It's a custom user command
 			customCmd := &UserCommand{}
 			b, err := yaml.Marshal(step)
