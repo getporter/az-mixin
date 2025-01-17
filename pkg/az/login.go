@@ -46,9 +46,9 @@ func (c *LoginCommand) GetArguments() []string {
 func (c *LoginCommand) GetFlags() builder.Flags {
 	flags := builder.Flags{}
 
-  if _, err := os.Stat(filepath.Join(os.Getenv("HOME"), ".azure")); err == nil {
-    return flags
-  }
+	if _, err := os.Stat(filepath.Join(os.Getenv("HOME"), ".azure")); err == nil {
+		return flags
+	}
 
 	if os.Getenv("AZURE_CLIENT_ID") != "" && os.Getenv("AZURE_CLIENT_SECRET") != "" && os.Getenv("AZURE_TENANT_ID") != "" {
 		// Add flags for service principal authentication
