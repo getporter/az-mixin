@@ -52,6 +52,7 @@ func (c *LoginCommand) GetFlags() builder.Flags {
 
 	if os.Getenv("AZURE_CLIENT_ID") != "" && os.Getenv("AZURE_CLIENT_SECRET") != "" && os.Getenv("AZURE_TENANT_ID") != "" {
 		// Add flags for service principal authentication
+		flags = append(flags, builder.NewFlag("service-principal", ""))
 		flags = append(flags, builder.NewFlag("username", os.Getenv("AZURE_CLIENT_ID")))
 		flags = append(flags, builder.NewFlag("password", os.Getenv("AZURE_CLIENT_SECRET")))
 		flags = append(flags, builder.NewFlag("tenant", os.Getenv("AZURE_TENANT_ID")))
