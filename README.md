@@ -222,9 +222,9 @@ mixins:
 The az mixin supports several authentication methods. All are provided with custom `login` command:
 
 ```yaml
-login:
-  az:
-    login:
+install:
+  - az:
+      login:
 ```
 
 ### Existing Azure CLI Authentication
