@@ -33,11 +33,16 @@ func (c *LoginCommand) SetAction(action string) {
 }
 
 func (c *LoginCommand) GetCommand() string {
+	if c.azureDirExists() {
+		// Use a no-op command since we don't have to log in.
+		return "true"
+	}
+
 	return "az"
 }
 
 func (c *LoginCommand) GetArguments() []string {
-	if _, err := os.Stat(filepath.Join(os.Getenv("HOME"), ".azure")); err == nil {
+	if c.azureDirExists() {
 		return []string{}
 	}
 	return []string{"login"}
@@ -46,7 +51,7 @@ func (c *LoginCommand) GetArguments() []string {
 func (c *LoginCommand) GetFlags() builder.Flags {
 	flags := builder.Flags{}
 
-	if _, err := os.Stat(filepath.Join(os.Getenv("HOME"), ".azure")); err == nil {
+	if c.azureDirExists() {
 		return flags
 	}
 
@@ -70,4 +75,9 @@ func (c *LoginCommand) GetFlags() builder.Flags {
 
 func (c *LoginCommand) SuppressesOutput() bool {
 	return false
+}
+
+func (c *LoginCommand) azureDirExists() bool {
+	_, err := os.Stat(filepath.Join(os.Getenv("HOME"), ".azure"))
+	return err == nil
 }

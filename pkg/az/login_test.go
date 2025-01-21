@@ -26,7 +26,7 @@ func TestLoginCommand_GetArguments_ServicePrincipal(t *testing.T) {
 	assert.Equal(t, expectedArgs, args)
 }
 
-func TestLoginCommand_GetArguments_ExistingAzureDirectory(t *testing.T) {
+func TestLoginCommand_GetCommandAndGetArguments_ExistingAzureDirectory(t *testing.T) {
 	tempHome := t.TempDir()
 	os.Setenv("HOME", tempHome)
 	homeDir := os.Getenv("HOME")
@@ -37,6 +37,7 @@ func TestLoginCommand_GetArguments_ExistingAzureDirectory(t *testing.T) {
 	args := cmd.GetArguments()
 
 	expectedArgs := []string{}
+	assert.Equal(t, "true", cmd.GetCommand())
 	assert.Equal(t, expectedArgs, args)
 }
 
@@ -68,6 +69,7 @@ func TestLoginCommand_GetFlags_ServicePrincipal(t *testing.T) {
 	flags := cmd.GetFlags()
 
 	expectedFlags := builder.Flags{
+		builder.NewFlag("service-principal", ""),
 		builder.NewFlag("username", "test-client-id"),
 		builder.NewFlag("password", "test-client-secret"),
 		builder.NewFlag("tenant", "test-tenant-id"),
@@ -105,15 +107,15 @@ func TestLoginCommand_GetFlags_SystemManagedIdentity(t *testing.T) {
 }
 
 func TestLoginCommand_GetFlags_ExistingAzureDirectory(t *testing.T) {
-  tempHome := t.TempDir()
-  os.Setenv("HOME", tempHome)
-  homeDir := os.Getenv("HOME")
-  os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755)
-  defer os.RemoveAll(filepath.Join(homeDir, ".azure"))
+	tempHome := t.TempDir()
+	os.Setenv("HOME", tempHome)
+	homeDir := os.Getenv("HOME")
+	os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755)
+	defer os.RemoveAll(filepath.Join(homeDir, ".azure"))
 
-  cmd := &LoginCommand{}
-  flags := cmd.GetFlags()
+	cmd := &LoginCommand{}
+	flags := cmd.GetFlags()
 
-  expectedFlags := builder.Flags{}
-  assert.Equal(t, expectedFlags, flags)
+	expectedFlags := builder.Flags{}
+	assert.Equal(t, expectedFlags, flags)
 }
