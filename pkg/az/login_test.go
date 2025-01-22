@@ -30,7 +30,9 @@ func TestLoginCommand_GetCommandAndGetArguments_ExistingAzureDirectory(t *testin
 	tempHome := t.TempDir()
 	os.Setenv("HOME", tempHome)
 	homeDir := os.Getenv("HOME")
-	os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755)
+	if err := os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755); err != nil {
+		t.Fatal("failed to create .azure directory:", err)
+	}
 	defer os.RemoveAll(filepath.Join(homeDir, ".azure"))
 
 	cmd := &LoginCommand{}
@@ -110,7 +112,9 @@ func TestLoginCommand_GetFlags_ExistingAzureDirectory(t *testing.T) {
 	tempHome := t.TempDir()
 	os.Setenv("HOME", tempHome)
 	homeDir := os.Getenv("HOME")
-	os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755)
+	if err := os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755); err != nil {
+		t.Fatal("failed to create .azure directory:", err)
+	}
 	defer os.RemoveAll(filepath.Join(homeDir, ".azure"))
 
 	cmd := &LoginCommand{}
