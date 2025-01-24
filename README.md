@@ -219,17 +219,36 @@ mixins:
 
 ### Authenticate
 
+The az mixin supports several authentication methods. All are provided with custom `login` command:
+
 ```yaml
-az:
-  description: "Azure CLI login"
-  arguments:
-    - login
-  flags:
-    service-principal:
-    username: ${ bundle.credentials.AZURE_SP_CLIENT_ID }
-    password: ${ bundle.credentials.AZURE_SP_PASSWORD }
-    tenant: ${ bundle.credentials.AZURE_TENANT }
+install:
+  - az:
+      login:
 ```
+
+### Existing Azure CLI Authentication
+
+If you have already authenticated using `az login`, the mixin will use your
+existing credentials. This requires the following files to exist in your
+`.azure` directory:
+- `azureProfile.json`: Contains your Azure profile information.
+- `msal_token_cache.json`: Contains the cached authentication tokens.
+
+### Service Principal Authentication
+
+To authenticate using a service principal, set the following environment
+variables:
+- `AZURE_CLIENT_ID`
+- `AZURE_CLIENT_SECRET`
+- `AZURE_TENANT_ID`
+
+### Managed Identity Authentication
+
+When running in Azure, you can authenticate using managed identity. By default,
+the system-assigned managed identity is used. To use a user-assigned managed
+identity, set the `AZURE_CLIENT_ID` environment variable to the client ID of
+the managed identity.
 
 ### Provision a VM
 
