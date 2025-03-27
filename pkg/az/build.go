@@ -47,11 +47,11 @@ type buildConfig struct {
 const buildTemplate string = `
 ENV PORTER_AZ_MIXIN_USER_AGENT_OPT_OUT="{{ .UserAgentOptOut}}"
 ENV AZURE_HTTP_USER_AGENT="{{ .AzureUserAgent }}"
-RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
 	apt-get update && apt-get install -y apt-transport-https lsb-release gnupg curl
 RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.asc.gpg
 RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list
-RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
 	apt-get update && apt-get install -y --no-install-recommends \
 	{{ if .InstallBicep }}libicu72 \{{ end }}
 	{{ if eq .ClientVersion ""}}azure-cli{{else}}azure-cli={{.ClientVersion}}-1~$(lsb_release -cs){{end}}
