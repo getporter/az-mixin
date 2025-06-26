@@ -1,6 +1,7 @@
 package az
 
 import (
+	"context"
 	"get.porter.sh/porter/pkg/exec/builder"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v3"
@@ -130,6 +131,7 @@ type TypedCommand interface {
 }
 
 var _ TypedCommand = &UserCommand{}
+var _ builder.HasErrorHandling = &UserCommand{}
 
 type UserCommand struct {
 	Name           string        `yaml:"name"`
@@ -140,7 +142,7 @@ type UserCommand struct {
 	SuppressOutput bool          `yaml:"suppress-output,omitempty"`
 
 	// Support custom error handling
-	builder.IgnoreErrorHandler `yaml:"ignoreErrors,omitempty"`
+	builder.IgnoreErrorHandler `yaml:"ignoreError,omitempty"`
 }
 
 func (s UserCommand) GetWorkingDir() string {
@@ -177,6 +179,10 @@ func (s *UserCommand) SuppressesOutput() bool {
 }
 
 func (s *UserCommand) SetAction(_ string) {}
+
+func (s *UserCommand) HandleError(ctx context.Context, err builder.ExitError, stdout string, stderr string) error {
+	return s.IgnoreErrorHandler.HandleError(ctx, err, stdout, stderr)
+}
 
 var _ builder.OutputJsonPath = Output{}
 var _ builder.OutputFile = Output{}
