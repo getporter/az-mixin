@@ -35,11 +35,21 @@ func main() {
 					attribute.Bool("panic", true),
 					attribute.String("stackTrace", string(debug.Stack())))
 				log.EndSpan()
-				m.Close()
+				err := m.Close()
+				if err != nil {
+					fmt.Println(err)
+				}
 				os.Exit(cli.ExitCodeErr)
 			} else {
-				log.Close()
-				m.Close()
+				// try and report these errors anyway we can (the log is probably closed already!)
+				err := log.Close()
+				if err != nil {
+					fmt.Println(err)
+				}
+				err = m.Close()
+				if err != nil {
+					fmt.Println(err)
+				}
 			}
 		}()
 

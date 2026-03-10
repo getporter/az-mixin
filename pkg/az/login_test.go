@@ -11,13 +11,36 @@ import (
 
 func TestLoginCommand_GetArguments_ServicePrincipal(t *testing.T) {
 	tempHome := t.TempDir()
-	os.Setenv("HOME", tempHome)
-	os.Setenv("AZURE_CLIENT_ID", "test-client-id")
-	os.Setenv("AZURE_CLIENT_SECRET", "test-client-secret")
-	os.Setenv("AZURE_TENANT_ID", "test-tenant-id")
-	defer os.Unsetenv("AZURE_CLIENT_ID")
-	defer os.Unsetenv("AZURE_CLIENT_SECRET")
-	defer os.Unsetenv("AZURE_TENANT_ID")
+	err := os.Setenv("HOME", tempHome)
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Setenv("AZURE_CLIENT_ID", "test-client-id")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Setenv("AZURE_CLIENT_SECRET", "test-client-secret")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Setenv("AZURE_TENANT_ID", "test-tenant-id")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	defer func() {
+		err := os.Unsetenv("AZURE_CLIENT_ID")
+		if err != nil {
+			t.Fatal("failed to unset env", err)
+		}
+		err = os.Unsetenv("AZURE_CLIENT_SECRET")
+		if err != nil {
+			t.Fatal("failed to unset env", err)
+		}
+		err = os.Unsetenv("AZURE_TENANT_ID")
+		if err != nil {
+			t.Fatal("failed to unset env", err)
+		}
+	}()
 
 	cmd := &LoginCommand{}
 	args := cmd.GetArguments()
@@ -28,12 +51,20 @@ func TestLoginCommand_GetArguments_ServicePrincipal(t *testing.T) {
 
 func TestLoginCommand_GetCommandAndGetArguments_ExistingAzureDirectory(t *testing.T) {
 	tempHome := t.TempDir()
-	os.Setenv("HOME", tempHome)
+	err := os.Setenv("HOME", tempHome)
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
 	homeDir := os.Getenv("HOME")
-	if err := os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(homeDir, ".azure"), 0o755); err != nil {
 		t.Fatal("failed to create .azure directory:", err)
 	}
-	defer os.RemoveAll(filepath.Join(homeDir, ".azure"))
+	defer func() {
+		err := os.RemoveAll(filepath.Join(homeDir, ".azure"))
+		if err != nil {
+			t.Fatal("failed to tidy up", err)
+		}
+	}()
 
 	cmd := &LoginCommand{}
 	args := cmd.GetArguments()
@@ -45,10 +76,22 @@ func TestLoginCommand_GetCommandAndGetArguments_ExistingAzureDirectory(t *testin
 
 func TestLoginCommand_GetArguments_ManagedIdentity(t *testing.T) {
 	tempHome := t.TempDir()
-	os.Setenv("HOME", tempHome)
-	os.Unsetenv("AZURE_CLIENT_ID")
-	os.Unsetenv("AZURE_CLIENT_SECRET")
-	os.Unsetenv("AZURE_TENANT_ID")
+	err := os.Setenv("HOME", tempHome)
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Unsetenv("AZURE_CLIENT_ID")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Unsetenv("AZURE_CLIENT_SECRET")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Unsetenv("AZURE_TENANT_ID")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
 
 	cmd := &LoginCommand{}
 	args := cmd.GetArguments()
@@ -59,13 +102,36 @@ func TestLoginCommand_GetArguments_ManagedIdentity(t *testing.T) {
 
 func TestLoginCommand_GetFlags_ServicePrincipal(t *testing.T) {
 	tempHome := t.TempDir()
-	os.Setenv("HOME", tempHome)
-	os.Setenv("AZURE_CLIENT_ID", "test-client-id")
-	os.Setenv("AZURE_CLIENT_SECRET", "test-client-secret")
-	os.Setenv("AZURE_TENANT_ID", "test-tenant-id")
-	defer os.Unsetenv("AZURE_CLIENT_ID")
-	defer os.Unsetenv("AZURE_CLIENT_SECRET")
-	defer os.Unsetenv("AZURE_TENANT_ID")
+	err := os.Setenv("HOME", tempHome)
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Setenv("AZURE_CLIENT_ID", "test-client-id")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Setenv("AZURE_CLIENT_SECRET", "test-client-secret")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Setenv("AZURE_TENANT_ID", "test-tenant-id")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	defer func() {
+		err := os.Unsetenv("AZURE_CLIENT_ID")
+		if err != nil {
+			t.Fatal("failed to set env", err)
+		}
+		err = os.Unsetenv("AZURE_CLIENT_SECRET")
+		if err != nil {
+			t.Fatal("failed to set env", err)
+		}
+		err = os.Unsetenv("AZURE_TENANT_ID")
+		if err != nil {
+			t.Fatal("failed to set env", err)
+		}
+	}()
 
 	cmd := &LoginCommand{}
 	flags := cmd.GetFlags()
@@ -81,9 +147,20 @@ func TestLoginCommand_GetFlags_ServicePrincipal(t *testing.T) {
 
 func TestLoginCommand_GetFlags_UserAssignedManagedIdentity(t *testing.T) {
 	tempHome := t.TempDir()
-	os.Setenv("HOME", tempHome)
-	os.Setenv("AZURE_CLIENT_ID", "test-client-id")
-	defer os.Unsetenv("AZURE_CLIENT_ID")
+	err := os.Setenv("HOME", tempHome)
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	err = os.Setenv("AZURE_CLIENT_ID", "test-client-id")
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
+	defer func() {
+		err := os.Unsetenv("AZURE_CLIENT_ID")
+		if err != nil {
+			t.Fatal("unable to unset env", err)
+		}
+	}()
 
 	cmd := &LoginCommand{}
 	flags := cmd.GetFlags()
@@ -97,7 +174,10 @@ func TestLoginCommand_GetFlags_UserAssignedManagedIdentity(t *testing.T) {
 
 func TestLoginCommand_GetFlags_SystemManagedIdentity(t *testing.T) {
 	tempHome := t.TempDir()
-	os.Setenv("HOME", tempHome)
+	err := os.Setenv("HOME", tempHome)
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
 
 	cmd := &LoginCommand{}
 	flags := cmd.GetFlags()
@@ -110,12 +190,20 @@ func TestLoginCommand_GetFlags_SystemManagedIdentity(t *testing.T) {
 
 func TestLoginCommand_GetFlags_ExistingAzureDirectory(t *testing.T) {
 	tempHome := t.TempDir()
-	os.Setenv("HOME", tempHome)
+	err := os.Setenv("HOME", tempHome)
+	if err != nil {
+		t.Fatal("failed to set env", err)
+	}
 	homeDir := os.Getenv("HOME")
-	if err := os.MkdirAll(filepath.Join(homeDir, ".azure"), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(homeDir, ".azure"), 0o755); err != nil {
 		t.Fatal("failed to create .azure directory:", err)
 	}
-	defer os.RemoveAll(filepath.Join(homeDir, ".azure"))
+	defer func() {
+		err := os.RemoveAll(filepath.Join(homeDir, ".azure"))
+		if err != nil {
+			t.Fatal("failed to tidy up", err)
+		}
+	}()
 
 	cmd := &LoginCommand{}
 	flags := cmd.GetFlags()
