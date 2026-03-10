@@ -16,8 +16,10 @@ const (
 	mixinBin     = "bin/mixins/" + mixinName
 )
 
-var magefile = mixins.NewMagefile(mixinPackage, mixinName, mixinBin)
-var must = shx.CommandBuilder{StopOnError: true}
+var (
+	magefile = mixins.NewMagefile(mixinPackage, mixinName, mixinBin)
+	must     = shx.CommandBuilder{StopOnError: true}
+)
 
 func ConfigureAgent() {
 	magefile.ConfigureAgent()
@@ -54,7 +56,7 @@ func Vet() {
 
 // Run golangci-lint on the project
 func Lint() {
-	mg.Deps(tools.EnsureGolangCILint)
+	mg.Deps(func() { tools.EnsureGolangCILintAt("2.11.3") })
 	must.RunV("golangci-lint", "run", "--max-issues-per-linter", "0", "--max-same-issues", "0", "./...")
 }
 

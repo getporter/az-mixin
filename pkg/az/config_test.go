@@ -11,7 +11,10 @@ import (
 
 func TestMixinSetsUserAgentEnvVar(t *testing.T) {
 	// CI sets this value and we need to clear it out to make the test reproducible
-	os.Unsetenv(AzureUserAgentEnvVar)
+	err := os.Unsetenv(AzureUserAgentEnvVar)
+	if err != nil {
+		t.Fatal("Failed to unset env", err)
+	}
 
 	t.Run("sets env var", func(t *testing.T) {
 		pkg.Commit = "abc123"
@@ -51,7 +54,10 @@ func TestMixinSetsUserAgentEnvVar(t *testing.T) {
 		require.Equal(t, expected, m.userAgent, "validate we remember the user agent string for later")
 	})
 	t.Run("call multiple times", func(t *testing.T) {
-		os.Unsetenv(AzureUserAgentEnvVar)
+		err := os.Unsetenv(AzureUserAgentEnvVar)
+		if err != nil {
+			t.Fatal("failed to unset environment", err)
+		}
 		// Validate that calling multiple times doesn't make a messed up env var
 		pkg.Commit = "abc123"
 		pkg.Version = "v1.2.3"
@@ -68,7 +74,10 @@ func TestMixinSetsUserAgentEnvVar(t *testing.T) {
 
 func TestMixinSetsUserAgentEnvVar_OptOut(t *testing.T) {
 	// CI sets this value and we need to clear it out to make the test reproducible
-	os.Unsetenv(AzureUserAgentEnvVar)
+	err := os.Unsetenv(AzureUserAgentEnvVar)
+	if err != nil {
+		t.Fatal("Failed to unset environment", err)
+	}
 
 	t.Run("opt-out", func(t *testing.T) {
 		// Validate that at runtime when we are calling the az cli, that if the bundle author opted-out, we don't set the user agent string
